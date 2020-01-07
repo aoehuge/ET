@@ -5,50 +5,47 @@ using ETModel;
 namespace ETHotfix
 {
 	[ObjectSystem]
-	public class MessageDispatherComponentAwakeSystem : AwakeSystem<MessageDispatherComponent>
+	public class MessageDispatcherComponentAwakeSystem : AwakeSystem<MessageDispatcherComponent>
 	{
-		public override void Awake(MessageDispatherComponent self)
+		public override void Awake(MessageDispatcherComponent self)
 		{
+			MessageDispatcherComponent.Instace = self;
 			self.Load();
 		}
 	}
 
 	[ObjectSystem]
-	public class MessageDispatherComponentLoadSystem : LoadSystem<MessageDispatherComponent>
+	public class MessageDispatcherComponentLoadSystem : LoadSystem<MessageDispatcherComponent>
 	{
-		public override void Load(MessageDispatherComponent self)
+		public override void Load(MessageDispatcherComponent self)
 		{
 			self.Load();
+		}
+	}
+	
+	[ObjectSystem]
+	public class MessageDispatcherComponentDestroySystem: DestroySystem<MessageDispatcherComponent>
+	{
+		public override void Destroy(MessageDispatcherComponent self)
+		{
+			MessageDispatcherComponent.Instace = null;
+			self.Handlers.Clear();
 		}
 	}
 
 	/// <summary>
 	/// 消息分发组件
 	/// </summary>
-	public static class MessageDispatherComponentEx
+	public static class MessageDispatcherComponentHelper
 	{
-		public static void Load(this MessageDispatherComponent self)
+		public static void Load(this MessageDispatcherComponent self)
 		{
 			self.Handlers.Clear();
 
-			AppType appType = StartConfigComponent.Instance.StartConfig.AppType;
-
-			List<Type> types = Game.EventSystem.GetTypes(typeof(MessageHandlerAttribute));
+			HashSet<Type> types = Game.EventSystem.GetTypes(typeof(MessageHandlerAttribute));
 
 			foreach (Type type in types)
 			{
-				object[] attrs = type.GetCustomAttributes(typeof(MessageHandlerAttribute), false);
-				if (attrs.Length == 0)
-				{
-					continue;
-				}
-
-				MessageHandlerAttribute messageHandlerAttribute = attrs[0] as MessageHandlerAttribute;
-				if (!messageHandlerAttribute.Type.Is(appType))
-				{
-					continue;
-				}
-
 				IMHandler iMHandler = Activator.CreateInstance(type) as IMHandler;
 				if (iMHandler == null)
 				{
@@ -57,7 +54,7 @@ namespace ETHotfix
 				}
 
 				Type messageType = iMHandler.GetMessageType();
-				ushort opcode = Game.Scene.GetComponent<OpcodeTypeComponent>().GetOpcode(messageType);
+				ushort opcode = OpcodeTypeComponent.Instance.GetOpcode(messageType);
 				if (opcode == 0)
 				{
 					Log.Error($"消息opcode为0: {messageType.Name}");
@@ -67,7 +64,7 @@ namespace ETHotfix
 			}
 		}
 
-		public static void RegisterHandler(this MessageDispatherComponent self, ushort opcode, IMHandler handler)
+		public static void RegisterHandler(this MessageDispatcherComponent self, ushort opcode, IMHandler handler)
 		{
 			if (!self.Handlers.ContainsKey(opcode))
 			{
@@ -76,7 +73,7 @@ namespace ETHotfix
 			self.Handlers[opcode].Add(handler);
 		}
 
-		public static void Handle(this MessageDispatherComponent self, Session session, MessageInfo messageInfo)
+		public static void Handle(this MessageDispatcherComponent self, Session session, MessageInfo messageInfo)
 		{
 			List<IMHandler> actions;
 			if (!self.Handlers.TryGetValue(messageInfo.Opcode, out actions))

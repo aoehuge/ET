@@ -3,7 +3,6 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Net;
 using System.Net.Sockets;
-using System.Threading.Tasks;
 using Microsoft.IO;
 
 namespace ETModel
@@ -17,14 +16,16 @@ namespace ETModel
 		
 		public RecyclableMemoryStreamManager MemoryStreamManager = new RecyclableMemoryStreamManager();
 		
-		public HashSet<long> needStartSendChannel = new HashSet<long>();
+		public List<long> needStartSendChannel = new List<long>();
+		
+		public int PacketSizeLength { get; }
 		
 		/// <summary>
 		/// 即可做client也可做server
 		/// </summary>
-		public TService(IPEndPoint ipEndPoint, Action<AChannel> acceptCallback)
+		public TService(int packetSizeLength, IPEndPoint ipEndPoint, Action<AChannel> acceptCallback)
 		{
-			this.InstanceId = IdGenerater.GenerateId();
+			this.PacketSizeLength = packetSizeLength;
 			this.AcceptCallback += acceptCallback;
 			
 			this.acceptor = new Socket(AddressFamily.InterNetwork, SocketType.Stream, ProtocolType.Tcp);
@@ -37,9 +38,9 @@ namespace ETModel
 			this.AcceptAsync();
 		}
 
-		public TService()
+		public TService(int packetSizeLength)
 		{
-			this.InstanceId = IdGenerater.GenerateId();
+			this.PacketSizeLength = packetSizeLength;
 		}
 		
 		public override void Dispose()
@@ -69,7 +70,7 @@ namespace ETModel
 					OneThreadSynchronizationContext.Instance.Post(this.OnAcceptComplete, e);
 					break;
 				default:
-					throw new Exception($"socket error: {e.LastOperation}");
+					throw new Exception($"socket accept error: {e.LastOperation}");
 			}
 		}
 		
@@ -94,11 +95,13 @@ namespace ETModel
 			if (e.SocketError != SocketError.Success)
 			{
 				Log.Error($"accept error {e.SocketError}");
+				this.AcceptAsync();
 				return;
 			}
 			TChannel channel = new TChannel(e.AcceptSocket, this);
 			this.idChannels[channel.Id] = channel;
-
+			channel.Parent = this;
+			
 			try
 			{
 				this.OnAccept(channel);
@@ -127,7 +130,7 @@ namespace ETModel
 		{
 			TChannel channel = new TChannel(ipEndPoint, this);
 			this.idChannels[channel.Id] = channel;
-
+			channel.Parent = this;
 			return channel;
 		}
 

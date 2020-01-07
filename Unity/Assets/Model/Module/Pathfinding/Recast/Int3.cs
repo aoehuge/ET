@@ -1,4 +1,4 @@
-using PF;
+using UnityEngine;
 
 namespace PF {
 	/** Holds a coordinate in integers */
@@ -59,20 +59,6 @@ namespace PF {
 		public static explicit operator Vector3 (Int3 ob) {
 			return new Vector3(ob.x*PrecisionFactor, ob.y*PrecisionFactor, ob.z*PrecisionFactor);
 		}
-
-#if !SERVER	
-		public static explicit operator Int3 (UnityEngine.Vector3 ob) {
-			return new Int3(
-			                (int)System.Math.Round(ob.x*FloatPrecision),
-			                (int)System.Math.Round(ob.y*FloatPrecision),
-			                (int)System.Math.Round(ob.z*FloatPrecision)
-			               );
-		}
-	
-		public static explicit operator UnityEngine.Vector3 (Int3 ob) {
-			return new UnityEngine.Vector3(ob.x*PrecisionFactor, ob.y*PrecisionFactor, ob.z*PrecisionFactor);
-		}
-#endif
 
 		public static Int3 operator - (Int3 lhs, Int3 rhs) {
 			lhs.x -= rhs.x;

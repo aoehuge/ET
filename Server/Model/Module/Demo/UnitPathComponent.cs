@@ -1,20 +1,21 @@
 using System.Collections.Generic;
 using System.Threading;
 using PF;
+using UnityEngine;
 
 namespace ETModel
 {
-    public class UnitPathComponent: Component
+    public class UnitPathComponent: Entity
     {
         public Vector3 Target;
 
-        private ABPath abPath;
+        private ABPathWrap abPath;
         
         public List<Vector3> Path;
 
-        public CancellationTokenSource CancellationTokenSource;
+        public ETCancellationTokenSource CancellationTokenSource;
 
-        public ABPath ABPath
+        public ABPathWrap ABPath
         {
             get
             {

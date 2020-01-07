@@ -22,7 +22,7 @@ namespace ETHotfix
 		}
 	}
 
-	public class OperaComponent: Component
+	public class OperaComponent: Entity
     {
         public Vector3 ClickPoint;
 
@@ -50,12 +50,12 @@ namespace ETHotfix
 		            ETModel.SessionComponent.Instance.Session.Send(frameClickMap);
 
 					// 测试actor rpc消息
-					this.TestActor();
+					this.TestActor().Coroutine();
 				}
             }
         }
 
-	    public async void TestActor()
+	    public async ETVoid TestActor()
 	    {
 		    try
 		    {

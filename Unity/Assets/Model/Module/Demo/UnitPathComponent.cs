@@ -1,11 +1,10 @@
 ﻿using System.Collections.Generic;
 using System.Threading;
-using System.Threading.Tasks;
 using UnityEngine;
 
 namespace ETModel
 {
-	public class UnitPathComponent : Component
+	public class UnitPathComponent : Entity
 	{
 		public List<Vector3> Path = new List<Vector3>();
 
@@ -13,7 +12,7 @@ namespace ETModel
 
 		public CancellationTokenSource CancellationTokenSource;
 		
-		public async Task StartMove(CancellationToken cancellationToken)
+		public async ETTask StartMove(CancellationToken cancellationToken)
 		{
 			for (int i = 0; i < this.Path.Count; ++i)
 			{
@@ -33,13 +32,12 @@ namespace ETModel
 					}
 				}
 
-				MoveComponent moveComponent = this.Entity.GetComponent<MoveComponent>();
-				moveComponent.Turn(v);
-				await this.Entity.GetComponent<MoveComponent>().MoveToAsync(v, speed, cancellationToken);
+				this.Parent.GetComponent<TurnComponent>().Turn(v);
+				await this.Parent.GetComponent<MoveComponent>().MoveToAsync(v, speed, cancellationToken);
 			}
 		}
 
-		public async void StartMove(M2C_PathfindingResult message)
+		public async ETVoid StartMove(M2C_PathfindingResult message)
 		{
 			// 取消之前的移动协程
 			this.CancellationTokenSource?.Cancel();

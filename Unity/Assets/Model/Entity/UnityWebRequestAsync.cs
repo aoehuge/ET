@@ -1,7 +1,4 @@
 ﻿using System;
-using System.Threading;
-using System.Threading.Tasks;
-using UnityEngine;
 using UnityEngine.Networking;
 
 namespace ETModel
@@ -15,13 +12,23 @@ namespace ETModel
 		}
 	}
 	
-	public class UnityWebRequestAsync : Component
+	public class UnityWebRequestAsync : Entity
 	{
+		public class AcceptAllCertificate: CertificateHandler
+		{
+			protected override bool ValidateCertificate(byte[] certificateData)
+			{
+				return true;
+			}
+		}
+		
+		public static AcceptAllCertificate certificateHandler = new AcceptAllCertificate();
+		
 		public UnityWebRequest Request;
 
 		public bool isCancel;
 
-		public TaskCompletionSource<bool> tcs;
+		public ETTaskCompletionSource tcs;
 		
 		public override void Dispose()
 		{
@@ -65,7 +72,7 @@ namespace ETModel
 		{
 			if (this.isCancel)
 			{
-				this.tcs.SetResult(false);
+				this.tcs.SetException(new Exception($"request error: {this.Request.error}"));
 				return;
 			}
 			
@@ -79,15 +86,16 @@ namespace ETModel
 				return;
 			}
 
-			this.tcs.SetResult(true);
+			this.tcs.SetResult();
 		}
 
-		public Task<bool> DownloadAsync(string url)
+		public ETTask DownloadAsync(string url)
 		{
-			this.tcs = new TaskCompletionSource<bool>();
+			this.tcs = new ETTaskCompletionSource();
 			
 			url = url.Replace(" ", "%20");
 			this.Request = UnityWebRequest.Get(url);
+			this.Request.certificateHandler = certificateHandler;
 			this.Request.SendWebRequest();
 			
 			return this.tcs.Task;

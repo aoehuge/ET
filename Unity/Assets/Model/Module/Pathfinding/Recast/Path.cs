@@ -1,8 +1,8 @@
 //#define ASTAR_POOL_DEBUG //@SHOWINEDITOR Enables debugging of path pooling. Will log warnings and info messages about paths not beeing pooled correctly.
 
-using PF;
 using System.Collections;
 using System.Collections.Generic;
+using UnityEngine;
 
 namespace PF {
 	
@@ -208,7 +208,7 @@ namespace PF {
 		public List<GraphNode> path;
 
 		/** Holds the (possibly post processed) path as a Vector3 list */
-		public List<PF.Vector3> vectorPath;
+		public List<Vector3> vectorPath;
 
 		/** The node currently being processed */
 		protected PathNode currentR;

@@ -15,11 +15,11 @@ namespace ETModel
             self.AStarConfig.pathProcessor = self.PathProcessor;
             
             // 读取地图数据
-            self.AStarConfig.graphs = DeserializeHelper.Load("./graph.bytes");
+            self.AStarConfig.graphs = DeserializeHelper.Load("../Config/graph.bytes");
         }
     }
     
-    public class PathfindingComponent: Component
+    public class PathfindingComponent: Entity
     {
         public PathReturnQueue PathReturnQueue;
         
@@ -27,7 +27,7 @@ namespace ETModel
 
         public AStarConfig AStarConfig;
         
-        public bool Search(ABPath path)
+        public bool Search(ABPathWrap path)
         {
             this.PathProcessor.queue.Push(path.Path);
             while (this.PathProcessor.CalculatePaths().MoveNext())
@@ -43,7 +43,7 @@ namespace ETModel
                 return false;
             }
             
-            PathModifyHelper.StartEndModify((PF.ABPath)path.Path);
+            PathModifyHelper.StartEndModify(path.Path);
             PathModifyHelper.FunnelModify(path.Path);
 
             return true;

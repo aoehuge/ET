@@ -1,10 +1,14 @@
 ﻿using System.Collections.Generic;
 using System.Linq;
+using MongoDB.Bson.Serialization.Attributes;
+using MongoDB.Bson.Serialization.Options;
 
 namespace ETModel
 {
-	public class UnitComponent: Component
+	public class UnitComponent: Entity
 	{
+		[BsonElement]
+		[BsonDictionaryOptions(DictionaryRepresentation.ArrayOfArrays)]
 		private readonly Dictionary<long, Unit> idUnits = new Dictionary<long, Unit>();
 
 		public override void Dispose()
@@ -25,6 +29,7 @@ namespace ETModel
 		public void Add(Unit unit)
 		{
 			this.idUnits.Add(unit.Id, unit);
+			unit.Parent = this;
 		}
 
 		public Unit Get(long id)

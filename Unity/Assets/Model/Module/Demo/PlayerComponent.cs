@@ -12,11 +12,24 @@ namespace ETModel
 		}
 	}
 	
-	public class PlayerComponent : Component
+	public class PlayerComponent : Entity
 	{
 		public static PlayerComponent Instance { get; private set; }
 
-		public Player MyPlayer;
+		private Player myPlayer;
+
+		public Player MyPlayer
+		{
+			get
+			{
+				return this.myPlayer;
+			}
+			set
+			{
+				this.myPlayer = value;
+				this.myPlayer.Parent = this;
+			}
+		}
 		
 		private readonly Dictionary<long, Player> idPlayers = new Dictionary<long, Player>();
 
@@ -28,6 +41,7 @@ namespace ETModel
 		public void Add(Player player)
 		{
 			this.idPlayers.Add(player.Id, player);
+			player.Parent = this;
 		}
 
 		public Player Get(long id)

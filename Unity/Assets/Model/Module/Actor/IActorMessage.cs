@@ -6,17 +6,11 @@
 		long ActorId { get; set; }
 	}
 
-	public interface IActorRequest : IRequest
+	public interface IActorRequest : IActorMessage, IRequest
 	{
-		long ActorId { get; set; }
 	}
 
 	public interface IActorResponse : IResponse
 	{
-	}
-
-	public interface IFrameMessage : IMessage
-	{
-		long Id { get; set; }
 	}
 }

@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using System.IO;
 using System.Net;
 using System.Reflection;
-using System.Threading.Tasks;
+using System.Text;
 
 namespace ETModel
 {
@@ -37,9 +37,8 @@ namespace ETModel
 	/// <summary>
 	/// http请求分发器
 	/// </summary>
-	public class HttpComponent : Component
+	public class HttpComponent : Entity
 	{
-		public AppType appType;
 		public HttpListener listener;
 		public HttpConfig HttpConfig;
 		public Dictionary<string, IHttpHandler> dispatcher;
@@ -54,7 +53,6 @@ namespace ETModel
 		public void Awake()
 		{
 			StartConfig startConfig = StartConfigComponent.Instance.StartConfig;
-			this.appType = startConfig.AppType;
 			this.HttpConfig = startConfig.GetComponent<HttpConfig>();
 
 			this.Load();
@@ -67,7 +65,7 @@ namespace ETModel
 			this.getHandlers = new Dictionary<string, MethodInfo>();
 			this.postHandlers = new Dictionary<string, MethodInfo>();
 
-			List<Type> types = Game.EventSystem.GetTypes(typeof(HttpHandlerAttribute));
+			HashSet<Type> types = Game.EventSystem.GetTypes(typeof(HttpHandlerAttribute));
 
 			foreach (Type type in types)
 			{
@@ -78,10 +76,6 @@ namespace ETModel
 				}
 
 				HttpHandlerAttribute httpHandlerAttribute = (HttpHandlerAttribute)attrs[0];
-				if (!httpHandlerAttribute.AppType.Is(this.appType))
-				{
-					continue;
-				}
 
 				object obj = Activator.CreateInstance(type);
 
@@ -120,7 +114,7 @@ namespace ETModel
 
 				this.listener.Start();
 
-				this.Accept();
+				this.Accept().Coroutine();
 			}
 			catch (HttpListenerException e)
 			{
@@ -174,7 +168,7 @@ namespace ETModel
 			}
 		}
 
-		public async void Accept()
+		public async ETVoid Accept()
 		{
 			long instanceId = this.InstanceId;
 			
@@ -195,7 +189,7 @@ namespace ETModel
 		/// 调用处理方法
 		/// </summary>
 		/// <param name="context"></param>
-		private async Task InvokeHandler(HttpListenerContext context)
+		private async ETTask InvokeHandler(HttpListenerContext context)
 		{
 			context.Response.StatusCode = 404;
 
@@ -235,7 +229,7 @@ namespace ETModel
 				// 自动把返回值，以json方式响应。
 				object resp = methodInfo.Invoke(httpHandler, args);
 				object result = resp;
-				if (resp is Task t)
+				if (resp is ETTask<HttpResult> t)
 				{
 					await t;
 					result = t.GetType().GetProperty("Result").GetValue(t, null);
@@ -243,7 +237,7 @@ namespace ETModel
 
 				if (result != null)
 				{
-					using (StreamWriter sw = new StreamWriter(context.Response.OutputStream))
+					using (StreamWriter sw = new StreamWriter(context.Response.OutputStream,Encoding.UTF8))
 					{
 						if (result.GetType() == typeof(string))
 						{

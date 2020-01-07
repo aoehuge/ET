@@ -1,10 +1,6 @@
-﻿using System;
-using System.Net;
-using System.Threading.Tasks;
-
-namespace ETModel
+﻿namespace ETModel
 {
-	public class BenchmarkComponent: Component
+	public class BenchmarkComponent: Entity
 	{
 		public int k;
 

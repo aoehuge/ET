@@ -1,5 +1,5 @@
-using PF;
 using System.Collections.Generic;
+using UnityEngine;
 
 namespace PF {
 
@@ -324,7 +324,7 @@ namespace PF {
 		 *
 		 * \see http://digestingduck.blogspot.se/2010/03/simple-stupid-funnel-algorithm.html
 		 */
-		public virtual bool GetPortal (GraphNode other, List<PF.Vector3> left, List<PF.Vector3> right, bool backwards) {
+		public virtual bool GetPortal (GraphNode other, List<Vector3> left, List<Vector3> right, bool backwards) {
 			return false;
 		}
 

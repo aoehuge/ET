@@ -1,35 +1,32 @@
 ﻿using System.Collections.Generic;
+using ETModel;
 using UnityEngine;
 
 namespace ETHotfix
 {
-	[ETModel.ObjectSystem]
-	public class UiAwakeSystem : AwakeSystem<UI, GameObject>
+	[ObjectSystem]
+	public class UiAwakeSystem : AwakeSystem<UI, string, GameObject>
 	{
-		public override void Awake(UI self, GameObject gameObject)
+		public override void Awake(UI self, string name, GameObject gameObject)
 		{
-			self.Awake(gameObject);
+			self.Awake(name, gameObject);
 		}
 	}
 	
+	[HideInHierarchy]
 	public sealed class UI: Entity
 	{
-		public string Name
-		{
-			get
-			{
-				return this.GameObject.name;
-			}
-		}
-
-		public GameObject GameObject { get; private set; }
+		public string Name { get; private set; }
 
 		public Dictionary<string, UI> children = new Dictionary<string, UI>();
 		
-		public void Awake(GameObject gameObject)
+		public void Awake(string name, GameObject gameObject)
 		{
 			this.children.Clear();
-			this.GameObject = gameObject;
+			gameObject.AddComponent<ComponentView>().Component = this;
+			gameObject.layer = LayerMask.NameToLayer(LayerNames.UI);
+			this.Name = name;
+			this.ViewGO = gameObject;
 		}
 
 		public override void Dispose()
@@ -46,13 +43,13 @@ namespace ETHotfix
 				ui.Dispose();
 			}
 			
-			UnityEngine.Object.Destroy(GameObject);
+			UnityEngine.Object.Destroy(this.ViewGO);
 			children.Clear();
 		}
 
 		public void SetAsFirstSibling()
 		{
-			this.GameObject.transform.SetAsFirstSibling();
+			this.ViewGO.transform.SetAsFirstSibling();
 		}
 
 		public void Add(UI ui)
@@ -79,12 +76,12 @@ namespace ETHotfix
 			{
 				return child;
 			}
-			GameObject childGameObject = this.GameObject.transform.Find(name)?.gameObject;
+			GameObject childGameObject = this.ViewGO.transform.Find(name)?.gameObject;
 			if (childGameObject == null)
 			{
 				return null;
 			}
-			child = ComponentFactory.Create<UI, GameObject>(childGameObject);
+			child = EntityFactory.Create<UI, string, GameObject>(this.Domain, name, childGameObject);
 			this.Add(child);
 			return child;
 		}

@@ -1,21 +1,14 @@
 syntax = "proto3";
 package ETModel;
 
-message Actor_Test // IActorMessage
-{
-	int32 RpcId = 90;
-	int64 ActorId = 93;
-	string Info = 1;
-}
-
-message Actor_TestRequest // IActorLocationRequest
+message C2M_TestRequest // IActorLocationRequest
 {
 	int32 RpcId = 90;
 	int64 ActorId = 93;
 	string request = 1;
 }
 
-message Actor_TestResponse // IActorLocationResponse
+message M2C_TestResponse // IActorLocationResponse
 {
 	int32 RpcId = 90;
 	int32 Error = 91;
@@ -62,7 +55,7 @@ message UnitInfo
 	float Z = 4;
 }
 
-message Actor_CreateUnits // IActorMessage
+message M2C_CreateUnits // IActorMessage
 {
 	int32 RpcId = 90;
 	int64 ActorId = 93;

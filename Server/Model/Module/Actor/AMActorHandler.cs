@@ -1,13 +1,12 @@
 ﻿using System;
-using System.Threading.Tasks;
 
 namespace ETModel
 {
 	public abstract class AMActorHandler<E, Message>: IMActorHandler where E: Entity where Message : class, IActorMessage
 	{
-		protected abstract void Run(E entity, Message message);
+		protected abstract ETTask Run(E entity, Message message);
 
-		public async Task Handle(Session session, Entity entity, object actorMessage)
+		public async ETTask Handle(Session session, Entity entity, object actorMessage)
 		{
 			Message msg = actorMessage as Message;
 			if (msg == null)
@@ -22,9 +21,14 @@ namespace ETModel
 				return;
 			}
 
-			this.Run(e, msg);
-
-			await Task.CompletedTask;
+			try
+			{
+				await this.Run(e, msg);
+			}
+			catch (Exception exception)
+			{
+				Log.Error(exception);
+			}
 		}
 
 		public Type GetMessageType()
