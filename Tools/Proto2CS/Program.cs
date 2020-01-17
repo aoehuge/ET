@@ -29,6 +29,7 @@ namespace ETTools
             }
             ProcessHelper.Run(protoc, "--csharp_out=\"../Unity/Assets/Model/Module/Message/\" --proto_path=\"./\" OuterMessage.proto", waitExit: true);
             ProcessHelper.Run(protoc, "--csharp_out=\"../Unity/Assets/Hotfix/Module/Message/\" --proto_path=\"./\" HotfixMessage.proto", waitExit: true);
+            ProcessHelper.Run(protoc, "--csharp_out=\"../Unity/Assets/Hotfix/Module/Message/\" --proto_path=\"./\" ChessMessage.proto", waitExit: true);
 
             // InnerMessage.proto生成cs代码
             InnerProto2CS.Proto2CS(); 
@@ -36,7 +37,8 @@ namespace ETTools
             Proto2CS("ETModel", "OuterMessage.proto", clientMessagePath, "OuterOpcode", 100);
 
             Proto2CS("ETHotfix", "HotfixMessage.proto", hotfixMessagePath, "HotfixOpcode", 10000);
-            
+            Proto2CS("ETHotfix", "ChessMessage.proto", hotfixMessagePath, "ChessOpcode", 20000);
+
             Console.WriteLine("proto2cs succeed!");
         }
 

@@ -20,5 +20,7 @@
 	    MaxHpPct = MaxHp * 10 + 3,
 	    MaxHpFinalAdd = MaxHp * 10 + 4,
 		MaxHpFinalPct = MaxHp * 10 + 5,
+
+        Gold = 1003,
 	}
 }

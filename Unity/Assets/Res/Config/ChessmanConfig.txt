@@ -1,0 +1,11 @@
+{"Id":1001,"Name":"盖伦","Desc":"对周围单位群体伤害","Star":1,"FirstProperty":1,"SecondProperty":1}
+{"Id":1002,"Name":"拉克丝","Desc":"对周围单位群体伤害","Star":1,"FirstProperty":2,"SecondProperty":1}
+{"Id":1003,"Name":"盖伦2","Desc":"对周围单位群体伤害","Star":1,"FirstProperty":1,"SecondProperty":3}
+{"Id":1004,"Name":"盖伦3","Desc":"对周围单位群体伤害","Star":2,"FirstProperty":1,"SecondProperty":4}
+{"Id":1005,"Name":"盖伦4","Desc":"对周围单位群体伤害","Star":2,"FirstProperty":3,"SecondProperty":5}
+{"Id":1006,"Name":"盖伦5","Desc":"对周围单位群体伤害","Star":2,"FirstProperty":3,"SecondProperty":3}
+{"Id":1007,"Name":"盖伦6","Desc":"对周围单位群体伤害","Star":3,"FirstProperty":4,"SecondProperty":2}
+{"Id":1008,"Name":"盖伦7","Desc":"对周围单位群体伤害","Star":3,"FirstProperty":4,"SecondProperty":4}
+{"Id":1009,"Name":"盖伦8","Desc":"对周围单位群体伤害","Star":4,"FirstProperty":5,"SecondProperty":5}
+{"Id":1010,"Name":"盖伦9","Desc":"对周围单位群体伤害","Star":4,"FirstProperty":6,"SecondProperty":1}
+{"Id":1011,"Name":"盖伦10","Desc":"对周围单位群体伤害","Star":5,"FirstProperty":7,"SecondProperty":2}

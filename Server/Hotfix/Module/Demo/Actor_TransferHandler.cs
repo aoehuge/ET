@@ -37,6 +37,7 @@ namespace ETHotfix
 			//await Game.Scene.GetComponent<LocationProxyComponent>().UnLock(unitId, instanceId, m2m_TrasferUnitResponse.InstanceId);
 
 			reply();
+			await ETTask.CompletedTask;
 		}
 	}
 }

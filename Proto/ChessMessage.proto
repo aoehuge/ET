@@ -1,0 +1,72 @@
+syntax = "proto3";
+package ETHotfix;
+
+message ChessmanInfo
+{
+    int64 ChessmanId  = 1;
+}
+
+message C2M_DealCards // IRequest
+{
+    int32 RpcId = 90;
+}
+
+message M2C_DealCards // IResponse
+{
+    int32 RpcId = 90;
+    int32 Error = 91;
+    string Message = 92;
+    
+    repeated ChessmanInfo Chessmans = 1;
+}
+
+message M2C_BroadcastDealCard // IActorMessage
+{
+    int32 RpcId = 90;
+    int64 ActorId = 93;
+    int64 Id = 1;
+    ChessmanInfo Chessman = 2;
+}
+
+message C2M_SellCard // IRequest
+{
+    int32 RpcId = 90;
+    int64 ChessmanId  = 1;
+}
+
+message M2C_SellCard // IResponse
+{
+    int32 RpcId = 90;
+    int32 Error = 91;
+    string Message = 92;
+    
+    int64 ChessmanId  = 1;
+}
+
+message C2M_AddExp // IRequest
+{
+    int32 RpcId = 90;
+}
+
+message M2C_AddExp // IResponse
+{
+    int32 RpcId = 90;
+    int32 Error = 91;
+    string Message = 92;
+    
+    bool Result  = 1;
+}
+
+message AddGold
+{
+    int64 Id = 1;
+    int32 gold = 2;
+}
+
+//加金币
+message M2C_BroadcastAddGold // IActorMessage
+{
+    int32 RpcId = 90;
+    int64 ActorId = 93;
+    repeated AddGold Golds = 1;
+}

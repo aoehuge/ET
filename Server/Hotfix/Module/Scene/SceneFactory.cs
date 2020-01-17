@@ -28,11 +28,14 @@ namespace ETHotfix
                     scene.AddComponent<UnitComponent>();
                     scene.AddComponent<PathfindingComponent>();
                     break;
+                case SceneType.Room:
+                    scene.AddComponent<UnitComponent>();
+                    break;
                 case SceneType.Location:
                     scene.AddComponent<LocationComponent>();
                     break;
             }
-
+            await ETTask.CompletedTask;
             return scene;
         }
     }

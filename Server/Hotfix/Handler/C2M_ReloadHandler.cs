@@ -22,6 +22,7 @@ namespace ETHotfix
 			//	await serverSession.Call(new M2A_Reload());
 			//}
 			reply();
+			await ETTask.CompletedTask;
 		}
 	}
 }
