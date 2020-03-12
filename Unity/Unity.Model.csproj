@@ -203,14 +203,28 @@
     <Compile Include="Assets\Model\Module\Demo\UnitComponent.cs" />
     <Compile Include="Assets\Model\Module\Demo\UnitFactory.cs" />
     <Compile Include="Assets\Model\Module\Demo\UnitPathComponent.cs" />
+    <Compile Include="Assets\Model\Module\FairyGUI\FUI.cs" />
+    <Compile Include="Assets\Model\Module\FairyGUI\FUIComponent.cs" />
+    <Compile Include="Assets\Model\Module\FairyGUI\FUIHelper.cs" />
+    <Compile Include="Assets\Model\Module\FairyGUI\FUIPackageComponent.cs" />
+    <Compile Include="Assets\Model\Module\FairyGUI\FUIStackComponent.cs" />
+    <Compile Include="Assets\Model\Module\FairyGUI\FUIWindowComponent.cs" />
+    <Compile Include="Assets\Model\Module\FairyGUI\GWindow.cs" />
     <Compile Include="Assets\Model\Module\GameLogic\Chesser\Chesser.cs" />
     <Compile Include="Assets\Model\Module\GameLogic\Chesser\ChesserComponent.cs" />
+    <Compile Include="Assets\Model\Module\GameLogic\Chesser\ChesserFactory.cs" />
     <Compile Include="Assets\Model\Module\GameLogic\Chessman\Chessman.cs" />
     <Compile Include="Assets\Model\Module\GameLogic\Chessman\ChessmanComponent.cs" />
+    <Compile Include="Assets\Model\Module\GameLogic\Chessman\ChessmanFollowComponent.cs" />
     <Compile Include="Assets\Model\Module\GameLogic\Chessman\ChessmanHelper.cs" />
     <Compile Include="Assets\Model\Module\GameLogic\Chessman\ChessmanPool.cs" />
     <Compile Include="Assets\Model\Module\GameLogic\Chessman\ChessmanType.cs" />
     <Compile Include="Assets\Model\Module\GameLogic\Configs\ChessmanConfig.cs" />
+    <Compile Include="Assets\Model\Module\GameLogic\Configs\LevelConfig.cs" />
+    <Compile Include="Assets\Model\Module\GameLogic\Pet\Pet.cs" />
+    <Compile Include="Assets\Model\Module\GameLogic\Pet\PetComponent.cs" />
+    <Compile Include="Assets\Model\Module\GameLogic\Pet\PetFactory.cs" />
+    <Compile Include="Assets\Model\Module\GameLogic\Pet\PetPathComponent.cs" />
     <Compile Include="Assets\Model\Module\Message\AMHandler.cs" />
     <Compile Include="Assets\Model\Module\Message\ErrorCode.cs" />
     <Compile Include="Assets\Model\Module\Message\IMessage.cs" />
@@ -1004,23 +1018,12 @@
     <Reference Include="Boo.Lang">
       <HintPath>/Applications/Unity/Hub/Editor/2018.4.13c1/Unity.app/Contents/MonoBleedingEdge/lib/mono/unityscript/Boo.Lang.dll</HintPath>
     </Reference>
-    <Compile Include="Assets\Model\Module\GameLogic\Pet\PetComponent.cs" />
-    <Compile Include="Assets\Model\Module\GameLogic\Pet\Pet.cs" />
-    <Compile Include="Assets\Model\Module\GameLogic\Pet\PetFactory.cs" />
-    <Compile Include="Assets\Model\Module\GameLogic\Pet\PetPathComponent.cs" />
-    <Compile Include="Assets\Model\Module\GameLogic\Chesser\ChesserFactory.cs" />
-    <Compile Include="Assets\Model\Module\GameLogic\Chessman\ChessmanFollowComponent.cs" />
-    <Compile Include="Assets\Model\Module\GameLogic\Configs\LevelConfig.cs" />
-    <Compile Include="Assets\Model\Module\GameLogic\Pet\HpChange_PetChangeModel.cs" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="Unity.ThirdParty.csproj">
       <Project>{E15BADD2-3A26-309A-AB0F-DC5B08044350}</Project>
       <Name>Unity.ThirdParty</Name>
     </ProjectReference>
-  </ItemGroup>
-  <ItemGroup>
-    <Folder Include="Assets\Model\Module\GameLogic\Pet\" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <Target Name="GenerateTargetFrameworkMonikerAttribute" />

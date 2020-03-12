@@ -7,11 +7,11 @@ namespace ETHotfix
 	{
 		protected override async ETTask Run(ETModel.Session session, M2C_BroadcastAddGold message)
 		{
-			UnitComponent unitComponent = ETModel.Game.Scene.GetComponent<UnitComponent>();
+			ChesserComponent chesserComponent = ETModel.Game.Scene.GetComponent<ChesserComponent>();
             foreach (AddGold gold in message.Golds)
             {
-				Unit unit = unitComponent.Get(gold.Id);
-				unit.Gold = gold.Gold;
+				Chesser chesser = chesserComponent.Get(gold.Id);
+				chesser.Gold = gold.Gold;
 			}
 
 			await ETTask.CompletedTask;

@@ -9,13 +9,14 @@ namespace ETHotfix
 	{
 		public void Run(long id, int value)
 		{
-			UnitComponent unitComponent = ETModel.Game.Scene.GetComponent<UnitComponent>();
+			ChesserComponent ChesserComponent = ETModel.Game.Scene.GetComponent<ChesserComponent>();
 
-            if (unitComponent.MyUnit.Id == id)  //本人金币变化
+            if (ChesserComponent.MyChesser.Id == id)  //本人金币变化
             {
-				UIComponent uIComponent = Game.Scene.GetComponent<UIComponent>();
-				UI ui = uIComponent.Get(UIType.UIChessStore);
-				ui.GetComponent<UIChessStoreComponent>()?.SetGoldText(value);
+				FUIComponent fUIComponent = Game.Scene.GetComponent<FUIComponent>();
+				FUI ui = fUIComponent.Get(FUIType.UIChessStore);
+				FUI goldText = ui.GetComponent<FUIChessStoreComponent>().GoldText;
+				goldText.Get("gold").GObject.asLabel.text = string.Format("%d",value);
 			}
 		}
 	}

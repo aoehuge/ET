@@ -80,9 +80,8 @@ namespace ETHotfix
             Game.EventSystem.Awake(component, a, b, c, d);
             return component;
         }
-        
-        
-        public static Entity Create(Entity domain, Type type)
+
+		public static Entity Create(Entity domain, Type type)
         {
 	        Entity component = Game.ObjectPool.Fetch(type);
 	        component.Domain = domain ?? component;
